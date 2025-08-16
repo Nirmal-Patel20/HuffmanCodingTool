@@ -20,17 +20,29 @@
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release"
       }
+    },
+    {
+      "name": "ninja-tests",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/ninja-tests",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "BUILD_TESTS" : "ON"
+      }
     }
   ],
   "buildPresets": [
     { "name": "ninja-debug", "configurePreset": "ninja-debug" },
-    { "name": "ninja-release", "configurePreset": "ninja-release"}
+    { "name": "ninja-release", "configurePreset": "ninja-release"},
+    { "name": "ninja-tests", "configurePreset": "ninja-tests"}
   ],
 
   "testPresets": [
     {"name": "ninja-debug", "configurePreset": "ninja-debug",
       "output": { "outputOnFailure": true} },
     {"name": "ninja-release", "configurePreset": "ninja-release",
+      "output": { "outputOnFailure": true} },
+    {"name": "ninja-tests", "configurePreset": "ninja-tests",
       "output": { "outputOnFailure": true} }
   ]
 }
