@@ -59,6 +59,7 @@ std::vector<char> fileManager::getbuffer() const {
     if(inFile){
         char c;
         while(inFile.get(c)){
+            if(c == '\r') continue; //skip 
             buffer.push_back(c);
         }
     }
