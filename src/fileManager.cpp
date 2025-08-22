@@ -51,3 +51,17 @@ void fileManager::checkExtension(const fs::path& filePath, const std::string& ex
         throw std::runtime_error("Invalid file extension: " + filePath.filename().extension().string());
     }
 }
+
+std::vector<char> fileManager::getbuffer() const {
+    std::ifstream inFile(textFilePath, std::ios::binary);
+    std::vector<char> buffer;
+
+    if(inFile){
+        char c;
+        while(inFile.get(c)){
+            buffer.push_back(c);
+        }
+    }
+    
+    return buffer;
+}

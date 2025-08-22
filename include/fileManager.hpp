@@ -19,6 +19,9 @@ public:
     static void FileExists(const fs::path& FilePath);
     static void checkExtension(const fs::path& filePath, const std::string& extension);
 
+    //methods
+    std::vector<char> getbuffer () const;
+
 private:
     fs::path huffFilePath;
     fs::path textFilePath;
