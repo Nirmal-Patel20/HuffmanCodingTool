@@ -16,7 +16,11 @@ int FrequencyTable::getFrequency(char c) const {
 }
 
 void FrequencyTable::showFrequencyTable() const {
-    for(auto src : m_frequencyMap){
-        std::cout << "char : " << src.first << " ,Frequency : " << src.second << std::endl;
-    }
+    for (auto src : m_frequencyMap) {
+    std::cout << "char : ";
+    if (src.first == '\n') std::cout << "\\n"; //new line
+    else if (src.first == '\t') std::cout << "\\t";
+    else std::cout << src.first;
+    std::cout << ", Frequency : " << src.second << std::endl;
+}
 }
