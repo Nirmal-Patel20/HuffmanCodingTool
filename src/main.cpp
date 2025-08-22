@@ -23,7 +23,7 @@ int main(int argc, char* argv[]) {
 
         fileCompressor.compress(input_file, output_file);
     } else if(option == "--decompress"){
-        input_file = fileManager::moveFileToDataDir(input_file);
+        input_file = fileManager::moveFileToDataDir(argv[2]);
         output_file = fileManager::createFileinDataDir(input_file,".txt");
 
         fileCompressor.decompress(input_file, output_file);
