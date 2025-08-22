@@ -5,6 +5,7 @@
 #include <iostream>
 
 #include "fileManager.hpp"
+#include "FrequencyTable.hpp"
 
 class huffman {
 public:
@@ -17,6 +18,9 @@ public:
   // If outputPath is empty, remove ".huff" and restore ".txt" in current directory
   void decompress(const std::filesystem::path& compressedFile, const std::filesystem::path& outputFile);
 
+  private:
+
+  FrequencyTable FreqTable;
 };
 
 #endif // HUFFMAN_HPP
