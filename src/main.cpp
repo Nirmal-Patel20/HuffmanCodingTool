@@ -18,11 +18,13 @@ int main(int argc, char* argv[]) {
     huffman fileCompressor;
 
     if(option == "--compress"){
+        fileManager::checkExtension(fs::path(argv[2]), ".txt");
         input_file = fileManager::moveFileToDataDir(argv[2]);
         output_file = fileManager::createFileinDataDir(input_file,".huff");
 
         fileCompressor.compress(input_file, output_file);
     } else if(option == "--decompress"){
+        fileManager::checkExtension(fs::path(argv[2]), ".huff");
         input_file = fileManager::moveFileToDataDir(argv[2]);
         output_file = fileManager::createFileinDataDir(input_file,".txt");
 
