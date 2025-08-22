@@ -4,19 +4,18 @@
 #include <filesystem>
 #include <iostream>
 
+#include "fileManager.hpp"
+
 class huffman {
-  public:
-    // constructor and distructor
-    huffman(); // default parameter
-    huffman(const std::string &inputFile, const std::string &outputFile);
+public:
 
-    // public API
-    void compress();
-    void decompress();
+  // Compress a file into a .huff file
+  // If outputPath is empty, create "compressed.huff" in current directory
+  void compress(const std::filesystem::path& decompressedFile, const std::filesystem::path& outputFile);
 
-  private:
-    std::string m_inputFile;
-    std::string m_outputFile;
+  // Decompress a .huff file back to original text
+  // If outputPath is empty, remove ".huff" and restore ".txt" in current directory
+  void decompress(const std::filesystem::path& compressedFile, const std::filesystem::path& outputFile);
 
 };
 

@@ -1,15 +1,9 @@
 #include "huffman.hpp"
 
-huffman::huffman() : huffman("data/decompressed.txt", "data/compressed.huff") {}
-
-huffman::huffman(const std::string &inputFile, const std::string &outputFile)
-    : m_inputFile(inputFile), m_outputFile(outputFile) {
+void  huffman::compress(const std::filesystem::path& decompressedFile,const std::filesystem::path& outputFile) {
+    fileManager fileManager(outputFile, decompressedFile);
 }
 
-void huffman::compress() {
-    //compress process
-}
-
-void huffman::decompress() {
-    //decompress process
+void huffman::decompress(const std::filesystem::path& compressedFile, const std::filesystem::path& outputFile) {
+    fileManager fileManager(outputFile, compressedFile);
 }
