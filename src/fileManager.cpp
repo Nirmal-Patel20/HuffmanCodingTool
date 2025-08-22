@@ -44,3 +44,10 @@ fs::path fileManager::moveFileToDataDir(const fs::path& src) {
     }
     return src; //if already in data dir, return the same path
 }
+
+
+void fileManager::checkExtension(const fs::path& filePath, const std::string& extension) {
+    if (filePath.extension() != extension) {
+        throw std::runtime_error("Invalid file extension: " + filePath.filename().extension().string());
+    }
+}
