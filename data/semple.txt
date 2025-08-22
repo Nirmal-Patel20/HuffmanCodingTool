@@ -1,0 +1,4 @@
+Huffman coding is a method of data compression that assigns variable-length codes to input characters.
+Shorter codes are given to more frequent characters, while longer codes go to rarer ones.
+This allows for efficient storage and transmission of data.
+By analyzing character frequency, Huffman coding builds an optimal prefix tree for encoding.
