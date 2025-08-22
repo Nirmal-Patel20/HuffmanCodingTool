@@ -17,8 +17,9 @@ fs::path fileManager::createFileinDataDir(const fs::path& src, const std::string
     }
 
     fs::path newFile = dataDir / (src.stem().string() + extension);
-    if(fs::exists(newFile)){
-        fs::remove(newFile);
+    int suffixCount = 1;
+    while(fs::exists(newFile)){
+        newFile = dataDir / (src.stem().string() + "("+ std::to_string(suffixCount++) + ")" + extension);
     }
     std::ofstream out (newFile);
 
