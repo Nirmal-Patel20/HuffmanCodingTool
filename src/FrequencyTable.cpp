@@ -22,5 +22,9 @@ void FrequencyTable::showFrequencyTable() const {
     else if (src.first == '\t') std::cout << "\\t";
     else std::cout << src.first;
     std::cout << ", Frequency : " << src.second << std::endl;
+    }
 }
-}
+
+std::unordered_map<char,int> FrequencyTable::getFrequencyMap() const{
+    return m_frequencyMap;
+};
