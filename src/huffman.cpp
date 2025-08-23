@@ -7,7 +7,11 @@ void  huffman::compress(const std::filesystem::path& decompressedFile,const std:
 
     FreqTable.buildUsingBuffer(buffer);//build FrequencyTable
 
-    auto binaryTree = buildHuffmanTree();
+    binaryTreeRoot = buildHuffmanTree();
+
+    generateHuffmanCodes(binaryTreeRoot);
+
+    
 }
 
 void huffman::decompress(const std::filesystem::path& compressedFile, const std::filesystem::path& outputFile) {
@@ -42,4 +46,17 @@ Node* huffman::buildHuffmanTree() {
     }
 
     return pq.top(); //return the root node
+}
+
+void huffman::generateHuffmanCodes(Node* Root, std::string prefix) {
+    Node* current = Root;
+
+    if(!current) return;
+
+    if(!current->left && !current->right){
+        huffmanCodes[current->symbol] = prefix;
+    }
+
+    generateHuffmanCodes(current->left, prefix + "0");
+    generateHuffmanCodes(current->right, prefix + "1");
 }

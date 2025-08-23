@@ -31,12 +31,17 @@ public:
   // If outputPath is empty, remove ".huff" and restore ".txt" in current directory
   void decompress(const std::filesystem::path& compressedFile, const std::filesystem::path& outputFile);
 
+  private:
+
   Node* buildHuffmanTree();
+
+  void generateHuffmanCodes(Node* Root,std::string prefix = "");
 
   private:
 
   FrequencyTable FreqTable;
-  Node* root;
+  Node* binaryTreeRoot = nullptr;
+  std::unordered_map<char, std::string> huffmanCodes;
 
 };
 
