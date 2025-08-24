@@ -35,7 +35,9 @@ public:
 
   Node* buildHuffmanTree();
 
+  //for encoding
   void generateHuffmanCodes(Node* Root,std::string prefix = "");
+  std::vector<bool> encode(std::vector<char>& buffer) const;
 
   private:
 
