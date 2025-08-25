@@ -66,3 +66,39 @@ std::vector<char> fileManager::getbuffer() const {
     
     return buffer;
 }
+
+void fileManager::writeTohuffFile(const std::vector<bool>& bitstream, const std::unordered_map<char,int>& freqTable){
+    std::ofstream outfile(huffFilePath);
+
+    //magic number
+    outfile << "HUFF 1.0.0" << std::endl;
+
+    //write frequency table
+    for(const auto& [symbol,freq] : freqTable){
+        outfile << (symbol == '\n' ? "\\n" : std::string(1,symbol)) << "," << freq << ".";
+    }
+
+    outfile << std::endl;
+    outfile << bitstream.size() << std::endl;
+
+    //convert bitstream to byte and write them into file
+    unsigned char byte = 0;
+    int bitcount = 0;
+
+    for(const auto& bit : bitstream){
+        byte = (byte << 1) | bit; //shitf to left then OR opration
+        ++bitcount;
+
+        if(bitcount == 8){
+            outfile.put(byte);
+            byte = 0;
+            bitcount = 0;
+        }
+    }
+
+    if(bitcount > 0){
+        byte <<= (8 - bitcount); //pad with zero
+        outfile.put(byte);
+    }
+    
+}

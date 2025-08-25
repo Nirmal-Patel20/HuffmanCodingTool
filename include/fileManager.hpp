@@ -21,6 +21,7 @@ public:
 
     //methods
     std::vector<char> getbuffer () const;
+    void writeTohuffFile(const std::vector<bool>& bitstream, const std::unordered_map<char,int>& freqTable);
 
 private:
     fs::path huffFilePath;
