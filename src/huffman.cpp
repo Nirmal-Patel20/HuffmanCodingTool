@@ -11,7 +11,10 @@ void  huffman::compress(const std::filesystem::path& decompressedFile,const std:
 
     generateHuffmanCodes(binaryTreeRoot);
 
-    
+    std::vector<bool> bitstream = encode(buffer); //write encoded data to file
+
+    fileManager.writeTohuffFile(bitstream, FreqTable.getFrequencyMap()); //write to huffman file
+
 }
 
 void huffman::decompress(const std::filesystem::path& compressedFile, const std::filesystem::path& outputFile) {
