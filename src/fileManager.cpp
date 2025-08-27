@@ -119,3 +119,51 @@ void fileManager::checkVersion(const fs::path& filePath, const std::string& vers
         }
     }
 }
+
+std::pair<std::unordered_map<char,int>, std::vector<bool>> fileManager::readFromhuffFile(){
+    std::pair<std::unordered_map<char,int>, std::vector<bool>> freqAndBits;
+    
+    std::ifstream infile(huffFilePath,std::ios::binary);
+
+    std::string line;
+
+    // Skip the first line
+    std::getline(infile, line);
+
+    // Read the second line (contains the freq table)
+    if (!std::getline(infile, line)) {
+        throw std::runtime_error ("file is empty or corrupted: " + huffFilePath.string());
+    }
+
+    std::istringstream iss(line);
+    std::string token;
+
+    while (std::getline(iss, token, '|')) { // Split by '|'
+        std::istringstream tokenStream(token);
+        std::string symbolStr, freqStr;
+
+        if (std::getline(tokenStream, symbolStr, '<') && std::getline(tokenStream, freqStr, '|')) { // Read rest of token as frequency
+            int freq = std::stoi(freqStr);
+            char symbol = std::string(symbolStr == "\\n" ? "\n" : symbolStr)[0]; // Handle newline character
+            freqAndBits.first[symbol] = freq; // Store frequency
+            std::cout << "Symbol: " << (symbol == '\n' ? "\\n" : std::string(1,symbol)) << ", Frequency: " << freq << std::endl;
+        }
+    }
+
+    // Read the third line (contains the bitstream size)
+    std::getline(infile,line);
+    int totalBits = std::stoi(line);
+
+    // Read the remaining bits
+    char byte;
+    while (infile.get(byte)) {
+        for (int i = 7; i >= 0; --i) {
+            freqAndBits.second.push_back((byte >> i) & 1);
+        }
+    }
+
+    // Trim the bitstream to the correct size
+    freqAndBits.second.resize(totalBits);
+
+    return freqAndBits;
+}

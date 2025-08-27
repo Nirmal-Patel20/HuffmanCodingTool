@@ -18,7 +18,9 @@ void  huffman::compress(const std::filesystem::path& decompressedFile,const std:
 }
 
 void huffman::decompress(const std::filesystem::path& compressedFile, const std::filesystem::path& outputFile) {
-    fileManager fileManager(outputFile, compressedFile);
+    fileManager fileManager(compressedFile, outputFile);
+    std::pair<std::unordered_map<char,int>, std::vector<bool>> freqAndBits = fileManager.readFromhuffFile();
+
 }
 
 Node* huffman::buildHuffmanTree() {

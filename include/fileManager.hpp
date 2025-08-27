@@ -25,6 +25,7 @@ public:
     void writeTohuffFile(const std::vector<bool>& bitstream, const std::unordered_map<char,int>& freqTable);
 
     //methods for decompress file
+    std::pair<std::unordered_map<char,int>, std::vector<bool>> readFromhuffFile();
 
 private:
     fs::path huffFilePath;
