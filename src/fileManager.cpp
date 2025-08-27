@@ -146,7 +146,6 @@ std::pair<std::unordered_map<char,int>, std::vector<bool>> fileManager::readFrom
             int freq = std::stoi(freqStr);
             char symbol = std::string(symbolStr == "\\n" ? "\n" : symbolStr)[0]; // Handle newline character
             freqAndBits.first[symbol] = freq; // Store frequency
-            std::cout << "Symbol: " << (symbol == '\n' ? "\\n" : std::string(1,symbol)) << ", Frequency: " << freq << std::endl;
         }
     }
 
