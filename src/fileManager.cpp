@@ -75,7 +75,7 @@ void fileManager::writeTohuffFile(const std::vector<bool>& bitstream, const std:
 
     //write frequency table
     for(const auto& [symbol,freq] : freqTable){
-        outfile << (symbol == '\n' ? "\\n" : std::string(1,symbol)) << "," << freq << ".";
+        outfile << (symbol == '\n' ? "\\n" : std::string(1,symbol)) << "<" << freq << "|";
     }
 
     outfile << std::endl;
