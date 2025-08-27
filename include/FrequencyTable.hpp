@@ -17,6 +17,7 @@ class FrequencyTable {
     int getFrequency(char c) const;
     void showFrequencyTable() const;
     std::unordered_map<char,int> getFrequencyMap() const;
+    void setFrequencyMap(const std::unordered_map<char,int>& freqMap);
 
     private:
 
