@@ -102,3 +102,20 @@ void fileManager::writeTohuffFile(const std::vector<bool>& bitstream, const std:
     }
     
 }
+
+void fileManager::checkVersion(const fs::path& filePath, const std::string& version) {
+    std::ifstream inFile(filePath);
+    std::string fileVersion;
+
+    if (inFile) {
+        std::getline(inFile, fileVersion);
+
+        if(fileVersion.empty()) {
+            throw std::runtime_error("File is empty or corrupted: " + filePath.string());
+        }else if(fileVersion.find("HUFF") == std::string::npos) {
+            throw std::runtime_error("File is not compressed by this tool: " + filePath.string());
+        }else if (fileVersion != version) {
+            throw std::runtime_error("Invalid file version: " + fileVersion + " expected: " + version);
+        }
+    }
+}

@@ -18,10 +18,13 @@ public:
     static fs::path moveFileToDataDir(const fs::path& src);
     static void FileExists(const fs::path& FilePath);
     static void checkExtension(const fs::path& filePath, const std::string& extension);
+    static void checkVersion(const fs::path& filePath, const std::string& version);
 
-    //methods
+    //methods for compress file
     std::vector<char> getbuffer () const;
     void writeTohuffFile(const std::vector<bool>& bitstream, const std::unordered_map<char,int>& freqTable);
+
+    //methods for decompress file
 
 private:
     fs::path huffFilePath;
