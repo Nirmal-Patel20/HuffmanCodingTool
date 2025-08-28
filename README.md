@@ -22,16 +22,9 @@ HuffmanCodingTool/
 │   ├── encoder.cpp
 │   └── decoder.cpp
 │
-├── tests/
-│   ├── CMakeLists.txt             # Test-specific CMake
-│   └── test_huffman.cpp           # Unit tests using Catch2
-│
 ├── data/
 │   ├── sample.txt                 # Example input
 │   └── compressed.bin             # Example output
-│
-├── cmake/
-│   └── FetchCatch2.cmake          # Script to fetch Catch2
 │
 ├── .clang-format                  # Code formatting rules
 ├── .gitignore                     # Git ignores build/artifacts
