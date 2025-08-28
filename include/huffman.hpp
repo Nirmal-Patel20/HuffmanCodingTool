@@ -34,11 +34,15 @@ public:
 
   private:
 
+  // Build the Huffman tree from the frequency table
   Node* buildHuffmanTree();
 
   //for encoding
   void generateHuffmanCodes(Node* Root,std::vector<bool> codeSofar = {});
   std::vector<bool> encode(const std::vector<char>& buffer) const;
+
+  //for decoding;
+  std::vector<char> decode(const std::vector<bool>& bitstream) const;
 
   private:
 

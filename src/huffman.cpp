@@ -9,7 +9,7 @@ void  huffman::compress(const std::filesystem::path& decompressedFile,const std:
 
     binaryTreeRoot = buildHuffmanTree();//root of binarytree
 
-    generateHuffmanCodes(binaryTreeRoot);
+    generateHuffmanCodes(binaryTreeRoot); //generate huffman codes
 
     std::vector<bool> bitstream = encode(buffer); //write encoded data to file
 
@@ -22,13 +22,13 @@ void huffman::decompress(const std::filesystem::path& compressedFile, const std:
 
     auto freqAndBits = fileManager.readFromhuffFile();//get frequencyTable and bit stream
 
-    const auto& bitstream = freqAndBits.second; 
+    const auto& bitstream = freqAndBits.second; //get bitstream
 
     FreqTable.setFrequencyMap(freqAndBits.first); //set frequency map
 
-
     binaryTreeRoot = buildHuffmanTree();//root of binarytree.\build\ninja-release\HuffmanCodingTool.exe --decompress "data/semple.huff"  
 
+    auto decodedChars = decode(bitstream); //decode the bitstream
 }
 
 Node* huffman::buildHuffmanTree() {
@@ -95,4 +95,22 @@ std::vector<bool> huffman::encode(const std::vector<char>& buffer) const {
     }
 
     return encodeBits;
+}
+
+std::vector<char> huffman::decode(const std::vector<bool>& bitstream) const {
+    std::vector<char> decodedChars;
+    Node* currentNode = binaryTreeRoot;
+
+    for (bool bit : bitstream) {
+
+        (bit == 0) ? currentNode = currentNode->left : currentNode = currentNode->right;
+
+        // If we reach a leaf node, append the character and reset to root
+        if (!currentNode->left && !currentNode->right) {
+            decodedChars.push_back(currentNode->symbol);
+            currentNode = binaryTreeRoot;
+        }
+    }
+
+    return decodedChars;
 }
