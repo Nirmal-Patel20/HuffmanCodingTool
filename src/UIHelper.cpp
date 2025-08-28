@@ -1,12 +1,13 @@
 #include "UIHelper.hpp"
 
-const char* UIHelper::get_exe_name(const char *path) {
-    const char *slash = strrchr(path, '/');   // Unix
-    if (!slash) slash = strrchr(path, '\\');  // Windows
+const char *UIHelper::get_exe_name(const char *path) {
+    const char *slash = strrchr(path, '/'); // Unix
+    if (!slash)
+        slash = strrchr(path, '\\'); // Windows
     return slash ? slash + 1 : path;
 }
 
-std::string UIHelper::checkValidOptions(int argc, char* argv[]) {
+std::string UIHelper::checkValidOptions(int argc, char *argv[]) {
     if (argc != 3) {
         std::cerr << "Usage:\n";
         std::cerr << "  " << get_exe_name(argv[0]) << " --compress <input>\n";
@@ -21,9 +22,9 @@ std::string UIHelper::checkValidOptions(int argc, char* argv[]) {
         exit(EXIT_FAILURE);
     }
 
-    try{
+    try {
         fileManager::FileExists(argv[2]);
-    }catch(const std::exception& e){
+    } catch (const std::exception &e) {
         std::cerr << "Error: " << e.what() << std::endl;
         std::cerr << "Please provide a valid file path." << std::endl;
         exit(EXIT_FAILURE);
