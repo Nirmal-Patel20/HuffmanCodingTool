@@ -29,6 +29,8 @@ void huffman::decompress(const std::filesystem::path& compressedFile, const std:
     binaryTreeRoot = buildHuffmanTree();//root of binarytree.\build\ninja-release\HuffmanCodingTool.exe --decompress "data/semple.huff"  
 
     auto decodedChars = decode(bitstream); //decode the bitstream
+
+    fileManager.writeTotextFile(decodedChars); //write to text file
 }
 
 Node* huffman::buildHuffmanTree() {
