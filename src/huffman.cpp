@@ -19,16 +19,26 @@ void  huffman::compress(const std::filesystem::path& decompressedFile,const std:
 
 void huffman::decompress(const std::filesystem::path& compressedFile, const std::filesystem::path& outputFile) {
     fileManager fileManager(compressedFile, outputFile);
-    auto freqAndBits = fileManager.readFromhuffFile();
+
+    auto freqAndBits = fileManager.readFromhuffFile();//get frequencyTable and bit stream
+
+    const auto& bitstream = freqAndBits.second; 
 
     FreqTable.setFrequencyMap(freqAndBits.first); //set frequency map
-    binaryTreeRoot = buildHuffmanTree();//root of binarytree
+
+
+    binaryTreeRoot = buildHuffmanTree();//root of binarytree.\build\ninja-release\HuffmanCodingTool.exe --decompress "data/semple.huff"  
+
 }
 
 Node* huffman::buildHuffmanTree() {
     auto freqMap = FreqTable.getFrequencyMap();
 
-    auto cmp = [](Node* left, Node* right) { return left->frequency > right->frequency; };
+    auto cmp = [](Node* left, Node* right) {
+    if (left->frequency == right->frequency){
+        return left->symbol > right->symbol; // tie-breaker: smaller char goes first
+    }
+    return left->frequency > right->frequency;};
 
     std::priority_queue <Node*, std::vector<Node*>, decltype(cmp)> pq(cmp);
 
@@ -55,27 +65,33 @@ Node* huffman::buildHuffmanTree() {
     return pq.top(); //return the root node
 }
 
-void huffman::generateHuffmanCodes(Node* Root, std::string prefix) {
-    Node* current = Root;
+void huffman::generateHuffmanCodes(Node* Root, std::vector<bool> codeSofar) {
+    if (!Root) return;
 
-    if(!current) return;
-
-    if(!current->left && !current->right){
-        huffmanCodes[current->symbol] = prefix;
+    if (!Root->left && !Root->right) { // leaf node
+        huffmanCodes[Root->symbol] = codeSofar;
+        return;
     }
 
-    generateHuffmanCodes(current->left, prefix + "0");
-    generateHuffmanCodes(current->right, prefix + "1");
+    if (Root->left) {
+        auto leftCode = codeSofar;
+        leftCode.push_back(false); // 0 for left
+        generateHuffmanCodes(Root->left, leftCode);
+    }
+
+    if (Root->right) {
+        auto rightCode = codeSofar;
+        rightCode.push_back(true); // 1 for right
+        generateHuffmanCodes(Root->right, rightCode);
+    }
 }
 
-std::vector<bool> huffman::encode(std::vector<char>& buffer) const {
+std::vector<bool> huffman::encode(const std::vector<char>& buffer) const {
     std::vector<bool> encodeBits;
 
-    for(const char& c : buffer){
-        const std::string& prefix = huffmanCodes.at(c);
-        for(char bit : prefix){
-            encodeBits.push_back(bit == '1');
-        }
+    for (const char& c : buffer) {
+        const auto& prefix = huffmanCodes.at(c);
+        encodeBits.insert(encodeBits.end(), prefix.begin(), prefix.end());
     }
 
     return encodeBits;

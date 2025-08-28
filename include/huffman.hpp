@@ -4,6 +4,7 @@
 #include <filesystem>
 #include <iostream>
 #include <queue>
+#include <unordered_map>
 
 #include "fileManager.hpp"
 #include "FrequencyTable.hpp"
@@ -36,14 +37,14 @@ public:
   Node* buildHuffmanTree();
 
   //for encoding
-  void generateHuffmanCodes(Node* Root,std::string prefix = "");
-  std::vector<bool> encode(std::vector<char>& buffer) const;
+  void generateHuffmanCodes(Node* Root,std::vector<bool> codeSofar = {});
+  std::vector<bool> encode(const std::vector<char>& buffer) const;
 
   private:
 
   FrequencyTable FreqTable;
   Node* binaryTreeRoot = nullptr;
-  std::unordered_map<char, std::string> huffmanCodes;
+  std::unordered_map<char, std::vector<bool>> huffmanCodes;
 
 };
 
