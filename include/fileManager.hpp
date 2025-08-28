@@ -23,9 +23,11 @@ public:
 
     //methods for compress file
     std::vector<char> getbuffer () const;
+    std::string escapeChar(char c) const;
     void writeTohuffFile(const std::vector<bool>& bitstream, const std::map<char,int>& freqTable);
 
     //methods for decompress file
+    char unescapeChar(const std::string& str) const;
     std::pair<std::map<char,int>, std::vector<bool>> readFromhuffFile();
 
 private:

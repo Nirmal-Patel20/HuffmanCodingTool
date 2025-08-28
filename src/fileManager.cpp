@@ -67,21 +67,36 @@ std::vector<char> fileManager::getbuffer() const {
     return buffer;
 }
 
+std::string fileManager::escapeChar(char c) const {
+    switch (c) {
+        case '\n': return "\\n";
+        case '\t': return "\\t";
+        case '\\': return "\\\\";
+        case '<':  return "\\<";
+        case '>':  return "\\>";
+        case '|':  return "\\|";
+        default: return std::string(1, c);
+    }
+}
+
 void fileManager::writeTohuffFile(const std::vector<bool>& bitstream, const std::map<char,int>& freqTable){
-    std::ofstream outfile(huffFilePath);
+    std::ofstream outfile(huffFilePath,std::ios::binary);
 
-    //magic number
-    outfile << "HUFF 1.0.0" << std::endl;
+    //Header
+    std::string header = "HUFF 1.0.0\n";
+    outfile.write(header.data(), header.size());
 
-    //write frequency table
-    for(const auto& [symbol,freq] : freqTable){
-        outfile << (symbol == '\n' ? "\\n" : std::string(1,symbol)) << "<" << freq << "|";
+    for (const auto& [symbol, freq] : freqTable) {
+        std::string entry = escapeChar(symbol) + "<" + std::to_string(freq) + "|";
+        outfile.write(entry.data(), entry.size());
     }
 
-    outfile << std::endl;
-    outfile << bitstream.size() << std::endl;
+    outfile.write("\n", 1);
+    std::string bitstreamSize = std::to_string(bitstream.size()) + "\n";
+    outfile.write(bitstreamSize.data(), bitstreamSize.size());
 
     //convert bitstream to byte and write them into file
+    std::vector<unsigned char> bytes;
     unsigned char byte = 0;
     int bitcount = 0;
 
@@ -90,7 +105,7 @@ void fileManager::writeTohuffFile(const std::vector<bool>& bitstream, const std:
         ++bitcount;
 
         if(bitcount == 8){
-            outfile.put(byte);
+            bytes.push_back(byte);
             byte = 0;
             bitcount = 0;
         }
@@ -98,7 +113,7 @@ void fileManager::writeTohuffFile(const std::vector<bool>& bitstream, const std:
 
     if(bitcount > 0){
         byte <<= (8 - bitcount); //pad with zero
-        outfile.put(byte);
+        bytes.push_back(byte);
     }
     
 }
@@ -120,6 +135,16 @@ void fileManager::checkVersion(const fs::path& filePath, const std::string& vers
     }
 }
 
+char fileManager::unescapeChar(const std::string& str) const {
+    if (str == "\\n") return '\n';
+    if (str == "\\t") return '\t';
+    if (str == "\\\\") return '\\';
+    if (str == "\\<") return '<';
+    if (str == "\\>") return '>';
+    if (str == "\\|") return '|';
+    return str[0]; // Return the first character for all other cases
+}
+
 std::pair<std::map<char,int>, std::vector<bool>> fileManager::readFromhuffFile(){
     std::pair<std::map<char,int>, std::vector<bool>> freqAndBits;
     
@@ -139,12 +164,15 @@ std::pair<std::map<char,int>, std::vector<bool>> fileManager::readFromhuffFile()
     std::string token;
 
     while (std::getline(iss, token, '|')) { // Split by '|'
+
+        if(token.empty()) continue;
+
         std::istringstream tokenStream(token);
         std::string symbolStr, freqStr;
 
         if (std::getline(tokenStream, symbolStr, '<') && std::getline(tokenStream, freqStr)) { // Read rest of token as frequency
             int freq = std::stoi(freqStr);
-            char symbol = std::string(symbolStr == "\\n" ? "\n" : symbolStr)[0]; // Handle newline character
+            char symbol = unescapeChar(symbolStr);
             freqAndBits.first[symbol] = freq; // Store frequency
         }
     }
