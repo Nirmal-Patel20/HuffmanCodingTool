@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <vector>
-#include <unordered_map>
+#include <map>
 
 class FrequencyTable {
     public :
@@ -16,12 +16,12 @@ class FrequencyTable {
     void addFrequency(char c);
     int getFrequency(char c) const;
     void showFrequencyTable() const;
-    std::unordered_map<char,int> getFrequencyMap() const;
-    void setFrequencyMap(const std::unordered_map<char,int>& freqMap);
+    std::map<char,int> getFrequencyMap() const;
+    void setFrequencyMap(const std::map<char,int>& freqMap);
 
     private:
 
-    std::unordered_map<char,int> m_frequencyMap;
+    std::map<char,int> m_frequencyMap;
 };
 
 #endif // FREQUENCYTABLE_HPP

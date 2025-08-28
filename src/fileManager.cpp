@@ -67,7 +67,7 @@ std::vector<char> fileManager::getbuffer() const {
     return buffer;
 }
 
-void fileManager::writeTohuffFile(const std::vector<bool>& bitstream, const std::unordered_map<char,int>& freqTable){
+void fileManager::writeTohuffFile(const std::vector<bool>& bitstream, const std::map<char,int>& freqTable){
     std::ofstream outfile(huffFilePath);
 
     //magic number
@@ -120,8 +120,8 @@ void fileManager::checkVersion(const fs::path& filePath, const std::string& vers
     }
 }
 
-std::pair<std::unordered_map<char,int>, std::vector<bool>> fileManager::readFromhuffFile(){
-    std::pair<std::unordered_map<char,int>, std::vector<bool>> freqAndBits;
+std::pair<std::map<char,int>, std::vector<bool>> fileManager::readFromhuffFile(){
+    std::pair<std::map<char,int>, std::vector<bool>> freqAndBits;
     
     std::ifstream infile(huffFilePath,std::ios::binary);
 
@@ -142,7 +142,7 @@ std::pair<std::unordered_map<char,int>, std::vector<bool>> fileManager::readFrom
         std::istringstream tokenStream(token);
         std::string symbolStr, freqStr;
 
-        if (std::getline(tokenStream, symbolStr, '<') && std::getline(tokenStream, freqStr, '|')) { // Read rest of token as frequency
+        if (std::getline(tokenStream, symbolStr, '<') && std::getline(tokenStream, freqStr)) { // Read rest of token as frequency
             int freq = std::stoi(freqStr);
             char symbol = std::string(symbolStr == "\\n" ? "\n" : symbolStr)[0]; // Handle newline character
             freqAndBits.first[symbol] = freq; // Store frequency

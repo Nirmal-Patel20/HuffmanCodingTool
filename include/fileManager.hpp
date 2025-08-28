@@ -6,6 +6,7 @@
 #include <vector>
 #include <filesystem>
 #include <functional>
+#include <map>
 
 namespace fs = std::filesystem;
 
@@ -22,10 +23,10 @@ public:
 
     //methods for compress file
     std::vector<char> getbuffer () const;
-    void writeTohuffFile(const std::vector<bool>& bitstream, const std::unordered_map<char,int>& freqTable);
+    void writeTohuffFile(const std::vector<bool>& bitstream, const std::map<char,int>& freqTable);
 
     //methods for decompress file
-    std::pair<std::unordered_map<char,int>, std::vector<bool>> readFromhuffFile();
+    std::pair<std::map<char,int>, std::vector<bool>> readFromhuffFile();
 
 private:
     fs::path huffFilePath;

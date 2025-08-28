@@ -25,10 +25,10 @@ void FrequencyTable::showFrequencyTable() const {
     }
 }
 
-std::unordered_map<char,int> FrequencyTable::getFrequencyMap() const{
+std::map<char,int> FrequencyTable::getFrequencyMap() const{
     return m_frequencyMap;
 };
 
-void FrequencyTable::setFrequencyMap(const std::unordered_map<char,int>& freqMap) {
+void FrequencyTable::setFrequencyMap(const std::map<char,int>& freqMap) {
     m_frequencyMap = freqMap;
 }
