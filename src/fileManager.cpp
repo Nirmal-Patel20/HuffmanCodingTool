@@ -115,7 +115,7 @@ void fileManager::writeTohuffFile(const std::vector<bool>& bitstream, const std:
         byte <<= (8 - bitcount); //pad with zero
         bytes.push_back(byte);
     }
-    
+
 }
 
 void fileManager::checkVersion(const fs::path& filePath, const std::string& version) {
@@ -193,4 +193,12 @@ std::pair<std::map<char,int>, std::vector<bool>> fileManager::readFromhuffFile()
     freqAndBits.second.resize(totalBits);
 
     return freqAndBits;
+}
+
+void fileManager::writeTotextFile(const std::vector<char>& decodedChars) {
+    std::ofstream outfile(textFilePath, std::ios::binary);
+
+    std::cout << textFilePath << std::endl;
+
+   outfile.write(decodedChars.data(), decodedChars.size());
 }

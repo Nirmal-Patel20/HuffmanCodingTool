@@ -29,6 +29,7 @@ public:
     //methods for decompress file
     char unescapeChar(const std::string& str) const;
     std::pair<std::map<char,int>, std::vector<bool>> readFromhuffFile();
+    void writeTotextFile(const std::vector<char>& decodedChars);
 
 private:
     fs::path huffFilePath;
