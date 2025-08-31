@@ -20,6 +20,11 @@ struct Node {
     int frequency;
     Node *left;
     Node *right;
+
+    ~Node() {
+        delete left;
+        delete right;
+    }
 };
 
 class huffman {

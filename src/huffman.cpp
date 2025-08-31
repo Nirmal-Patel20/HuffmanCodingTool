@@ -14,6 +14,8 @@ void huffman::compress(const std::filesystem::path &decompressedFile,
 
     std::vector<bool> bitstream = encode(buffer); // write encoded data to file
 
+    delete binaryTreeRoot; // delete the binary tree before writing to file
+
     fileManager.writeTohuffFile(bitstream, FreqTable.getFrequencyMap()); // write to huffman file
 }
 
@@ -30,6 +32,8 @@ void huffman::decompress(const std::filesystem::path &compressedFile,
     binaryTreeRoot = buildHuffmanTree(); // root of binarytree.
 
     auto decodedChars = decode(bitstream); // decode the bitstream
+
+    delete binaryTreeRoot; // delete the binary tree after decoding
 
     fileManager.writeTotextFile(decodedChars); // write to text file
 }
